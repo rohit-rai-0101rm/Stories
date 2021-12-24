@@ -17,11 +17,13 @@ export const getPosts=catchAsyncErr(async(req,res,next)=>{
 })
 
 export const addPost=catchAsyncErr(async(req,res,next)=>{
-    const Post=await PostMessage.create(req.body);
+    const Post=req.body;
+    const newPost=new PostMessage(post)
+    await newPost.save();
     
-    res.status(200).json({
+    res.status(201).json({
         success:true,
-        Post
+        newPost
         
     })
 
