@@ -1,12 +1,14 @@
 import { catchAsyncErr } from "../middleware/catchAsyncErrors.js"
+import Errorhandler from "../utils/ErrorHandler.js";
 import PostMessage from "../models/postModel.js";
-import { getAllPosts } from "../services/postServices.js";
 export const getPosts=catchAsyncErr(async(req,res,next)=>{
-    const allPostMessages=await getAllPosts();
-    const name="g"
+    const allPostMessages=await PostMessage.find();
+    if(!allPostMessages){
+        return next(new Errorhandler(("Product not found", 404)))
+    }
     res.status(200).json({
         success:true,
-        name,
+        
         allPostMessages
         
     })
@@ -14,7 +16,14 @@ export const getPosts=catchAsyncErr(async(req,res,next)=>{
     
 })
 
-export const  createPost=(req,res)=>{
-    res.status(200).json({mesaage:"first route"})
+export const addPost=catchAsyncErr(async(req,res,next)=>{
+    const Post=await PostMessage.create(req.body);
+    
+    res.status(200).json({
+        success:true,
+        Post
+        
+    })
 
-}
+    
+})
