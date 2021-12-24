@@ -18,7 +18,7 @@ export const getPosts=catchAsyncErr(async(req,res,next)=>{
 
 export const addPost=catchAsyncErr(async(req,res,next)=>{
     const Post=req.body;
-    const newPost=new PostMessage(post)
+    const newPost=new PostMessage(Post)
     await newPost.save();
     
     res.status(201).json({
