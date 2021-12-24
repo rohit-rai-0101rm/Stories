@@ -1,31 +1,39 @@
+import express from 'express';
+import mongoose from 'mongoose';
 import { catchAsyncErr } from "../middleware/catchAsyncErrors.js"
-import Errorhandler from "../utils/ErrorHandler.js";
-import PostMessage from "../models/postModel.js";
-export const getPosts=catchAsyncErr(async(req,res,next)=>{
-    const allPostMessages=await PostMessage.find();
-    if(!allPostMessages){
-        return next(new Errorhandler(("Product not found", 404)))
-    }
-    res.status(200).json({
-        success:true,
-        
-        allPostMessages
-        
-    })
 
+import PostMessage from '../models/postModel.js';
+
+const router = express.Router();
+
+export const getPosts = catchAsyncErr( async (req, res) => { 
+    
+        const postMessages = await PostMessage.find();
+                
+        res.status(200).json(postMessages);
     
 })
 
-export const addPost=catchAsyncErr(async(req,res,next)=>{
-    const Post=req.body;
-    const newPost=new PostMessage(Post)
-    await newPost.save();
-    
-    res.status(201).json({
-        success:true,
-        newPost
-        
-    })
+
+
+export const createPost = catchAsyncErr( async (req, res) => {
+    const { title, message, selectedFile, creator, tags } = req.body;
+
+    const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
 
     
+        await newPostMessage.save();
+
+        res.status(201).json({
+            success:true,
+            newPostMessage
+        })
+  
 })
+
+
+
+
+
+
+export default router;
