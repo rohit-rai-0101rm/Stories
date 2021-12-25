@@ -7,7 +7,15 @@ import PostMessage from "../models/postModel.js";
 const router = express.Router();
 
 export const getPosts = catchAsyncErr(async (req, res) => {
-  cloudinary.v2.api.resources({
+  
+  const postMessages = await PostMessage.find();
+  res.status(200).json({
+    postMessages,
+  });
+});
+  
+  
+  /* cloudinary.v2.api.resources({
     type: 'upload',
     prefix: 'Stories' // add your folder
   },
@@ -18,8 +26,7 @@ export const getPosts = catchAsyncErr(async (req, res) => {
       result,
   });
   
- })
-});
+ }) */
 
 export const createPost = catchAsyncErr(async (req, res) => {
   const { title, message, selectedFile, creator, tags } = req.body;
@@ -29,13 +36,9 @@ export const createPost = catchAsyncErr(async (req, res) => {
     crop: "scale",
   });
 
-  const newPostMessage = await PostMessage.create({
-    title,
-    message,
-    selectedFile: { selectedFile: myCloud.selectedFile },
-    creator,
-    tags,
-  });
+  const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
+  await newPostMessage.save();
+
   res.status(201).json({
     success: true,
     newPostMessage,
