@@ -7,9 +7,18 @@ import PostMessage from "../models/postModel.js";
 const router = express.Router();
 
 export const getPosts = catchAsyncErr(async (req, res) => {
-  const postMessages = await PostMessage.find();
-
-  res.status(200).json(postMessages);
+  cloudinary.v2.api.resources({
+    type: 'upload',
+    prefix: 'Stories' // add your folder
+  },
+   function(error, result) { 
+  
+    res.status(200).json({
+      success: true,
+      result,
+  });
+  
+ })
 });
 
 export const createPost = catchAsyncErr(async (req, res) => {
