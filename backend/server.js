@@ -11,9 +11,7 @@ cloudinary.config({
   api_key:process.env.CLOUDINARY_API_KEY,
   api_secret:process.env.CLOUDINARY_API_SECRET
 })
-cloudinary.v2.search.expression(
-  'folder:Stories' // add your folder
-  ).sort_by('public_id').max_results(30).execute().then(result=>console.log(result));
+
 
 app.listen(process.env.PORT_NUMBER,()=>{
     console.log(`server is working on http://localhost:${process.env.PORT_NUMBER}`)
