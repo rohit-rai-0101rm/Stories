@@ -3,10 +3,11 @@ import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
-
+import { useCreatePostMutation } from "../../service/postApi";
 const Form = () => {
   const dispatch = useDispatch();
-
+  const[createPost,data]=useCreatePostMutation()
+  console.log(createPost,data)
   const [postData, setPostData] = useState({
     creator: "",
     title: "",
@@ -23,9 +24,10 @@ const Form = () => {
       selectedFile: "",
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+     await createPost(postData)
+     window.location.reload()
   };
 
   return (
@@ -94,6 +96,7 @@ const Form = () => {
           size="large"
           type="submit"
           fullWidth
+          onClick={handleSubmit}
         >
           Submit
         </Button>

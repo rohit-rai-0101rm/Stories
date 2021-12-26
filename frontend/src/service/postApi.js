@@ -1,20 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-  const baseUrl=process.env.REACT_APP_POST_API
-  const createRequest = (url) => ({ url});
-
-  export const postApi = createApi({
-    reducerPath: 'postsApi',
-    baseQuery: fetchBaseQuery({baseUrl}),
+export const postApi = createApi({
+    reducerPath: "postApi",
+    baseQuery: fetchBaseQuery({
+      baseUrl: "http://localhost:5000/api/v1",
+    }),
     endpoints: (builder) => ({
-        getPosts: builder.query({
-            query: () => createRequest('/posts')
+      getPosts: builder.query({
+        query: () => "posts",
+      }),
+      
+      createPost: builder.mutation({
+        query: (newPost) => ({
+          url: "posts",
+          method: "POST",
+          body: newPost
         }),
-        
-        
-        
-    })
-})
-export const{
-    useGetPostsQuery
-}=postApi;
+       
+  
+      }),
+      
+     
+    }),
+  });
+  export const { useGetPostsQuery, useCreatePostMutation
+     } = postApi;
